@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Nav } from "@/components/site/Nav";
@@ -47,7 +48,9 @@ export default async function Page() {
                 </p>
 
                 <div className="relative z-50 mt-10 max-w-md animate-float-in" style={{ animationDelay: "240ms" }}>
-                  <SearchBar />
+                  <Suspense fallback={<div className="h-16 w-full rounded-full bg-card border border-line shadow-soft" />}>
+                    <SearchBar />
+                  </Suspense>
                 </div>
 
                 <div className="mt-6 flex flex-wrap items-center gap-2 animate-float-in" style={{ animationDelay: "320ms" }}>

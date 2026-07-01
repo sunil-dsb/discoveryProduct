@@ -2,7 +2,7 @@
 import { Search, ArrowRight, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 
@@ -34,6 +34,33 @@ export function SearchBar({ size = "lg" }: { size?: "lg" | "md" }) {
   const [suggestions, setSuggestions] = useState<any>({ products: [], categories: [], brands: [], tags: [] });
   const wrapRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Sync initial search value from URL
+  useEffect(() => {
+    const q = searchParams?.get("q") || "";
+    setValue(q);
+  }, [searchParams]);
+
+  // Debounced auto-submit when on the browse page
+  useEffect(() => {
+    if (pathname !== "/browse") return;
+    
+    // Don't auto-submit if it perfectly matches the URL query
+    const currentQ = searchParams?.get("q") || "";
+    if (value === currentQ) return;
+
+    const timeout = setTimeout(() => {
+      const p = new URLSearchParams(searchParams?.toString() || "");
+      if (value) p.set("q", value);
+      else p.delete("q");
+      p.delete("page");
+      router.push("?" + p.toString());
+    }, 400);
+
+    return () => clearTimeout(timeout);
+  }, [value, pathname, searchParams, router]);
 
   useEffect(() => {
     if (value) return;

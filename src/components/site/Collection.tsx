@@ -9,7 +9,9 @@ export function Collection({ id, title, description, items }: { id: string; titl
       <div className="flex items-end justify-between mb-8 gap-6">
         <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary mb-2 opacity-50">Collection</p>
-          <h2 className="font-display text-3xl md:text-4xl tracking-tight">{title}</h2>
+          <h2 className="font-display text-3xl md:text-4xl tracking-tight">
+            {title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()}
+          </h2>
           <p className="text-muted-foreground text-sm mt-2 max-w-md">{description}</p>
         </div>
         <Link href={`/browse?tag=${id}`} className="hidden sm:inline-flex items-center gap-1 text-sm font-medium hover:text-primary">
