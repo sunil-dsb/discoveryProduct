@@ -68,8 +68,6 @@ The normalization step runs once when the JSON loads. From that point on, all se
 **Semantic / vector search.** The catalog's consistent naming pattern (`adjective + material + object`) makes it ideal for embedding-based search. A user who types "earthy storage with texture" should surface rattan and terracotta pieces — that query produces zero results with keyword search today. This is the highest-value next improvement.
 
 
-**URL-persisted search state.** Search queries and active filters should write to the URL so results are shareable and the back button works as expected. This is the most obvious missing UX piece.
-
 **Better image handling.** The dataset uses `picsum.photos` placeholder images that don't reflect the actual product. In a real catalog, images are the primary browsing signal — lazy loading, aspect-ratio locking, and graceful fallbacks would all matter.
 
 ---
