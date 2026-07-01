@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-black: #141313;
+  --color-white: #ffffff;
+  --color-deep-green: #0c3c1e;
+  --color-fresh-green: #dbefd4;
+  --color-off-white: #fffcf3;
+  --color-neutral: #f5f5f1;
+  --color-green-tint: #f1f1e9;
+  --color-charcoal-500: #707070;
+  --color-charcoal-250: #a0a0a0;
+  --color-charcoal-100: #d9d7d7;
+
+  /* We keep the old-code Home Good colors mapped so we don't break existing components */
+  --color-background: var(--color-off-white);
+  --color-foreground: var(--color-black);
+  --color-card: var(--color-white);
+  --color-card-foreground: var(--color-black);
+  --color-popover: var(--color-white);
+  --color-popover-foreground: var(--color-black);
+  --color-primary: var(--color-deep-green);
+  --color-primary-foreground: var(--color-white);
+  --color-secondary: var(--color-green-tint);
+  --color-secondary-foreground: var(--color-black);
+  --color-muted: var(--color-neutral);
+  --color-muted-foreground: var(--color-charcoal-500);
+  --color-accent: var(--color-fresh-green);
+  --color-accent-foreground: var(--color-deep-green);
+  --color-destructive: #d31d1d;
+  --color-destructive-foreground: var(--color-white);
+  --color-border: var(--color-charcoal-100);
+  --color-input: var(--color-charcoal-100);
+  --color-ring: var(--color-deep-green);
+  --color-ink: var(--color-black);
+  --color-line: var(--color-charcoal-100);
+
+  --font-serif: "ABC Arizona Flare", ui-serif, Georgia, serif;
+  --font-sans: "Alliance No.1", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "ABC Arizona Flare", ui-serif, Georgia, serif;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 9999px;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-line);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-foreground);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  &:hover {
+    border-color: var(--color-primary);
+  }
+}
+
+@utility chip-active {
+  background-color: var(--color-ink);
+  color: var(--color-background);
+  border-color: var(--color-ink);
+}
+
+@utility surface-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 1rem;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
