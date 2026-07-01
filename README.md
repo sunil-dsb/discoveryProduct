@@ -15,12 +15,7 @@ Three lightweight views:
 
 **Search preview:** the search bar on the landing page shows an inline preview of matching items as you type title, brand, and image so users get immediate feedback without navigating away. Selecting a result takes you directly to the browse page with that query pre-filled.
 
-Everything runs server-side. The JSON is fetched once on load, normalized into structured in supabase tables, and held there.
-
----
-
-
-
+Everything runs server-side. The data is fetched directly from Supabase tables, where the normalized product data is stored.
 
 ---
 
@@ -44,11 +39,9 @@ The normalization step runs once when the JSON loads. From that point on, all se
 
 ## Search decisions
 
-**What is searched:** every query runs across title, brand name, category name, tags, and description simultaneously. Matching on title only would miss obvious lookups like "Fenwick" (a brand) or "rattan" (a tag that doesn't always appear in the title).
+**What is searched:** search runs across product titles, and also suggests categories, brands, and tags matching the query.
 
-**Fuzzy matching with Fuse.js:** exact substring search on a catalog where products share adjectives and materials produces noisy results and breaks on typos. Fuse.js was chosen as a lightweight, dependency-free fuzzy search library — it runs in-browser with no network call, handles typos gracefully, and is tunable per field.
-
-**Field weights:** not all matches are equal. Title matches are weighted higher than tag or description matches — if someone types "crate" they expect crate products first, not products that mention crates in a description.
+**Search with Supabase:** search is powered by Supabase's `ilike` queries across the normalized tables. It runs server-side to quickly find matching items based on exact substrings.
 
 **Debounced live results:** results update as the user types with a short debounce (~200ms). There is no submit button. This keeps the interaction feel close to filtering rather than searching, which suits a browse-first catalog.
 
@@ -74,7 +67,6 @@ The normalization step runs once when the JSON loads. From that point on, all se
 
 **Semantic / vector search.** The catalog's consistent naming pattern (`adjective + material + object`) makes it ideal for embedding-based search. A user who types "earthy storage with texture" should surface rattan and terracotta pieces — that query produces zero results with keyword search today. This is the highest-value next improvement.
 
-**Product detail page.** Currently clicking a card leads to a URL but no detail view. With another hour, a simple detail page (large image, full description, related products by tag/brand) would complete the experience.
 
 **URL-persisted search state.** Search queries and active filters should write to the URL so results are shareable and the back button works as expected. This is the most obvious missing UX piece.
 
@@ -82,15 +74,9 @@ The normalization step runs once when the JSON loads. From that point on, all se
 
 ---
 
-## The one tradeoff to watch
-
-**Client-side Fuse.js does not scale beyond this catalog size.** At 4,000 items, running fuzzy search in the browser is fast. At 40,000 items, initial load time and search latency become noticeable problems. The correct fix is a dedicated search service (Algolia, Typesense, or a pgvector-backed endpoint) where the index lives server-side and the browser only sends a query string and receives pre-ranked results. The current architecture makes sense for this task but should not be carried forward into a production catalog without revisiting this constraint.
-
----
-
 ## Stack
 
 - Next.js (App Router) + Tailwind CSS
-- Fuse.js for client-side fuzzy search
-- Data fetched once at runtime from the upstream JSON, held in memory
+- Supabase for PostgreSQL database and search
+- Data fetched directly from Supabase tables at runtime
 - Deployed on Vercel
